@@ -21,8 +21,9 @@
 # These variables may be overridden by the user
 TEXINFO_VERSION ?= 6.0
 EMACS_VERSION ?= 24.5
-EMACSCONFFLAGS ?= --with-x-toolkit=no --without-x --without-all --with-xml2
-EMACSBUILDVARS ?= CFLAGS='' CXXFLAGS=''
+# Build a minimal Emacs with no special flags, to build as fast as possible
+EMACSCONFFLAGS ?= --with-x-toolkit=no --without-x --without-all --with-xml2 \
+	CFLAGS='' CXXFLAGS=''
 
 .PHONY: download_emacs_stable clone_emacs_snapshot
 .PHONY: install_emacs install_cask install_texinfo
@@ -44,7 +45,7 @@ clone_emacs_snapshot:
 install_emacs:
 	@echo "Install Emacs $(EMACS_VERSION)"
 	@cd '/tmp/emacs' && ./configure --quiet --enable-silent-rules \
-		$(EMACSCONFFLAGS) --prefix="$(HOME)" $(EMACSBUILDVARS)
+		--prefix="$(HOME)" $(EMACSCONFFLAGS)
 	@make -j2 -C '/tmp/emacs' V=0 install
 
 ifeq ($(EMACS_VERSION),snapshot)
