@@ -20,7 +20,7 @@
 
 # These variables may be overridden by the user
 TEXINFO_VERSION ?= 6.0
-EMACS_VERSION ?=
+EMACS_VERSION ?= 24.5
 EMACSBUILDFLAGS ?= --with-x-toolkit=no --without-x --without-all --with-xml2
 EMACSBUILDVARS ?= CFLAGS='' CXXFLAGS=''
 
