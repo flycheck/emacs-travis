@@ -24,7 +24,7 @@ endif
 
 # These variables may be overridden by the user
 TEXINFO_VERSION ?= 6.0
-EMACS_VERSION ?= 24.5
+EMACS_VERSION ?=
 EMACSBUILDFLAGS ?= --with-x-toolkit=no --without-x --without-all --with-xml2
 EMACSBUILDVARS ?= CFLAGS='' CXXFLAGS=''
 
@@ -45,7 +45,6 @@ clone_emacs_snapshot:
 	# Create configure
 	cd /tmp/emacs && ./autogen.sh
 
-ifdef EMACS_VERSION
 install_emacs:
 	@echo "Install Emacs $(EMACS_VERSION)"
 	@cd '/tmp/emacs' && ./configure --quiet --enable-silent-rules \
@@ -63,15 +62,6 @@ install_cask:
 	@git clone --depth=1 https://github.com/cask/cask.git "$(HOME)/.cask"
 	@ln -s "$(HOME)/.cask/bin/cask" "$(HOME)/bin/cask"
 
-else
-install_emacs:
-	$(info "Skipping Emacs installation, $EMACS_VERSION not set")
-
-install_cask:
-	$(info "Skipping Cask installation, $EMACS_VERSION not set")
-endif
-
-ifdef TEXINFO_VERSION
 install_texinfo:
 	@echo "Install Texinfo $(TEXINFO_VERSION)"
 	@curl -o "/tmp/texinfo-$(TEXINFO_VERSION).tar.gz" \
@@ -80,20 +70,3 @@ install_texinfo:
 	@cd "/tmp/texinfo-$(TEXINFO_VERSION)" && \
 		./configure --quiet --enable-silent-rules --prefix="$(HOME)"
 	@make -j2 -C "/tmp/texinfo-$(TEXINFO_VERSION)" V=0 install
-else
-install_texinfo:
-	$(info "Skipping Texinfo installation, $TEXINFO_VERSION not set")
-endif
-
-show_versions:
-	@echo "Installed versions"
-ifdef EMACS_VERSION
-	@emacs --version
-else
-	@echo "Emacs not installed"
-endif
-ifdef TEXINFO_VERSION
-	@texi2any --version
-else
-	@echo "Texinfo not installed"
-endif
