@@ -23,10 +23,10 @@ $(error "TRAVIS_BUILD not set")
 endif
 
 # These variables may be overridden by the user
-TEXINFO_VERSION=6.0
-EMACS_VERSION=24.5
-EMACSBUILDFLAGS=--with-x-toolkit=no --without-x --without-all --with-xml2
-EMACSBUILDVARS=CFLAGS='' CXXFLAGS=''
+TEXINFO_VERSION ?= 6.0
+EMACS_VERSION ?= 24.5
+EMACSBUILDFLAGS ?= --with-x-toolkit=no --without-x --without-all --with-xml2
+EMACSBUILDVARS ?= CFLAGS='' CXXFLAGS=''
 
 .PHONY: download_emacs_stable clone_emacs_snapshot
 .PHONY: install_emacs install_cask install_texinfo
