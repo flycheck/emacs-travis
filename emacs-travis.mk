@@ -18,10 +18,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-ifeq ($(origin TRAVIS_BUILD), undefined)
-$(error "TRAVIS_BUILD not set")
-endif
-
 # These variables may be overridden by the user
 TEXINFO_VERSION ?= 6.0
 EMACS_VERSION ?=
