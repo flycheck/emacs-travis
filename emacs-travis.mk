@@ -26,7 +26,7 @@ ifeq ($(origin EMACS_VERSION), undefined)
 $(error "No $$EMACS_VERSION in environment!")
 endif
 
-TEXINFO_VERSION=$(TEXINFO_VERSION)
+TEXINFO_VERSION=6.0
 
 EMACSBUILDFLAGS=--with-x-toolkit=no --without-x --without-all --with-xml2
 EMACSBUILDVARS=CFLAGS='' CXXFLAGS=''
