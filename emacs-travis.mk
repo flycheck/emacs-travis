@@ -30,6 +30,7 @@ EMACSBUILDVARS ?= CFLAGS='' CXXFLAGS=''
 
 .PHONY: download_emacs_stable clone_emacs_snapshot
 .PHONY: install_emacs install_cask install_texinfo
+.PHONY: show_version
 
 download_emacs_stable:
 	@echo "Download Emacs $(EMACS_VERSION)"
@@ -82,4 +83,13 @@ install_texinfo:
 else
 install_texinfo:
 	$(info "Skipping Texinfo installation, $TEXINFO_VERSION not set")
+endif
+
+show_versions:
+	@echo "Installed versions"
+ifdef EMACS_VERSION
+	@emacs --version
+endif
+ifdef TEXINFO_VERSION
+	@texi2any --version
 endif
