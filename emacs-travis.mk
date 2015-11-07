@@ -21,7 +21,7 @@
 # These variables may be overridden by the user
 TEXINFO_VERSION ?= 6.0
 EMACS_VERSION ?= 24.5
-EMACSBUILDFLAGS ?= --with-x-toolkit=no --without-x --without-all --with-xml2
+EMACSCONFFLAGS ?= --with-x-toolkit=no --without-x --without-all --with-xml2
 EMACSBUILDVARS ?= CFLAGS='' CXXFLAGS=''
 
 .PHONY: download_emacs_stable clone_emacs_snapshot
@@ -44,7 +44,7 @@ clone_emacs_snapshot:
 install_emacs:
 	@echo "Install Emacs $(EMACS_VERSION)"
 	@cd '/tmp/emacs' && ./configure --quiet --enable-silent-rules \
-		$(EMACSBUILDFLAGS) --prefix="$(HOME)" $(EMACSBUILDVARS)
+		$(EMACSCONFFLAGS) --prefix="$(HOME)" $(EMACSBUILDVARS)
 	@make -j2 -C '/tmp/emacs' V=0 install
 
 ifeq ($(EMACS_VERSION),snapshot)
