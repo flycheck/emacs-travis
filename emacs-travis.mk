@@ -89,7 +89,11 @@ show_versions:
 	@echo "Installed versions"
 ifdef EMACS_VERSION
 	@emacs --version
+else
+	@echo "Emacs not installed"
 endif
 ifdef TEXINFO_VERSION
 	@texi2any --version
+else
+	@echo "Texinfo not installed"
 endif
