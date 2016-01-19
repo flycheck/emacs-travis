@@ -27,7 +27,7 @@ EMACSCONFFLAGS ?= --with-x-toolkit=no --without-x --without-all --with-xml2 \
 	CFLAGS='' CXXFLAGS=''
 
 ifeq ($(VERBOSE), yes)
-SILENT=> /dev/null
+SILENT=2>&1 > /dev/null
 else
 SILENT=
 endif
