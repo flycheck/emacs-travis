@@ -26,7 +26,7 @@ VERBOSE ?= no
 EMACSCONFFLAGS ?= --with-x-toolkit=no --without-x --without-all --with-xml2 \
 	CFLAGS='' CXXFLAGS=''
 
-ifeq ($(VERBOSE), yes)
+ifeq ($(VERBOSE),yes)
 SILENT=
 else
 SILENT=> /dev/null
