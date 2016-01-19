@@ -35,9 +35,18 @@ RSpec.describe 'Emacs installation' do
     expect(emacs).to be_executable
   end
 
-  it 'installs Emacs as by $EMACS_VERSION' do
+  def emacs_version
     skip 'Emacs not executable' unless emacs.executable?
-    output = Subprocess.check_output([emacs.to_s, '--version'])
-    expect(output).to match(/GNU Emacs #{Regexp.quote(version)}\.\d+/)
+    Subprocess.check_output([emacs.to_s, '--version'])
+  end
+
+  it 'installs stable Emacs as by $EMACS_VERSION' do
+    skip 'Snapshot version' if version == 'snapshot'
+    expect(emacs_version).to match(/GNU Emacs #{Regexp.quote(version)}\.\d+/)
+  end
+
+  it 'installs Emacs snapshot' do
+    skip 'Stable version' unless version == 'snapshot'
+    expect(emacs_version).to match(/GNU Emacs \d+\.(0|1)\.50\.\d+/)
   end
 end
