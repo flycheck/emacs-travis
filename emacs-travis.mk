@@ -27,9 +27,9 @@ EMACSCONFFLAGS ?= --with-x-toolkit=no --without-x --without-all --with-xml2 \
 	CFLAGS='' CXXFLAGS=''
 
 ifeq ($(VERBOSE), yes)
-SILENT=2>&1 > /dev/null
-else
 SILENT=
+else
+SILENT=> /dev/null
 endif
 
 .PHONY: download_emacs_stable clone_emacs_snapshot
