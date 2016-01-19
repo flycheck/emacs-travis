@@ -24,9 +24,11 @@ require 'rspec'
 
 RSpec.describe 'Emacs installation' do
   version = ENV['EMACS_VERSION']
-  skip '$EMACS_VERSION not set' unless version
-
   emacs = Pathname.new('~').expand_path / 'bin' / 'emacs'
+
+  before do
+    skip '$EMACS_VERSION not set' unless version
+  end
 
   it 'installs Emacs to $HOME/bin' do
     expect(emacs).to exist
@@ -34,7 +36,8 @@ RSpec.describe 'Emacs installation' do
   end
 
   it 'installs Emacs as by $EMACS_VERSION' do
-    output = Subprocess.check_output(['emacs', '--version'])
+    skip 'Emacs not executable' unless emacs.executable?
+    output = Subprocess.check_output([emacs.to_s, '--version'])
     expect(output).to match(/GNU Emacs #{Regexp.quote(version)}\.\d+/)
   end
 end
