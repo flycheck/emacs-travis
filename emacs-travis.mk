@@ -1,4 +1,4 @@
-# Copyright (c) 2015 Sebastian Wiesner <swiesner@lunaryorn.com>
+# Copyright (c) 2015-2016 Sebastian Wiesner <swiesner@lunaryorn.com>
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,9 +21,16 @@
 # These variables may be overridden by the user
 TEXINFO_VERSION ?= 6.0
 EMACS_VERSION ?= 24.5
+VERBOSE ?= no
 # Build a minimal Emacs with no special flags, to build as fast as possible
 EMACSCONFFLAGS ?= --with-x-toolkit=no --without-x --without-all --with-xml2 \
 	CFLAGS='' CXXFLAGS=''
+
+ifeq ($(VERBOSE), yes)
+SILENT=> /dev/null
+else
+SILENT=
+endif
 
 .PHONY: download_emacs_stable clone_emacs_snapshot
 .PHONY: install_emacs install_cask install_texinfo
@@ -45,8 +52,8 @@ clone_emacs_snapshot:
 install_emacs:
 	@echo "Install Emacs $(EMACS_VERSION)"
 	@cd '/tmp/emacs' && ./configure --quiet --enable-silent-rules \
-		--prefix="$(HOME)" $(EMACSCONFFLAGS)
-	@make -j2 -C '/tmp/emacs' V=0 install
+		--prefix="$(HOME)" $(EMACSCONFFLAGS) $(SILENT)
+	@make -j2 -C '/tmp/emacs' V=0 install $(SILENT)
 
 ifeq ($(EMACS_VERSION),snapshot)
 install_emacs: clone_emacs_snapshot
@@ -65,5 +72,5 @@ install_texinfo:
 		'http://ftp.gnu.org/gnu/texinfo/texinfo-$(TEXINFO_VERSION).tar.gz'
 	@tar xzf "/tmp/texinfo-$(TEXINFO_VERSION).tar.gz" -C /tmp
 	@cd "/tmp/texinfo-$(TEXINFO_VERSION)" && \
-		./configure --quiet --enable-silent-rules --prefix="$(HOME)"
-	@make -j2 -C "/tmp/texinfo-$(TEXINFO_VERSION)" V=0 install
+		./configure --quiet --enable-silent-rules --prefix="$(HOME)" $(SILENT)
+	@make -j2 -C "/tmp/texinfo-$(TEXINFO_VERSION)" V=0 install $(SILENT)
