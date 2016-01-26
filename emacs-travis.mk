@@ -24,7 +24,7 @@ EMACS_VERSION ?= 24.5
 VERBOSE ?= no
 # Build a minimal Emacs with no special flags, to build as fast as possible
 EMACSCONFFLAGS ?= --with-x-toolkit=no --without-x --without-all --with-xml2 \
-	CFLAGS='' CXXFLAGS=''
+	CFLAGS='-O2 -march=native' CXXFLAGS='-O2 -march=native'
 
 ifeq ($(VERBOSE),yes)
 SILENT=
