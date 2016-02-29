@@ -32,6 +32,9 @@ else
 SILENT=> /dev/null
 endif
 
+# Clone Emacs from the Github mirror because it's way faster than upstream
+EMACS_GIT_URL = https://github.com/emacs-mirror/emacs.git
+
 .PHONY: download_emacs_stable clone_emacs_snapshot
 .PHONY: install_emacs install_cask install_texinfo
 .PHONY: show_version
@@ -45,7 +48,7 @@ download_emacs_stable:
 
 clone_emacs_snapshot:
 	@echo "Clone Emacs from Git"
-	git clone --depth=1 'http://git.sv.gnu.org/r/emacs.git' /tmp/emacs
+	git clone --depth=1 '$(EMACS_GIT_URL)' /tmp/emacs
 	# Create configure
 	cd /tmp/emacs && ./autogen.sh
 
