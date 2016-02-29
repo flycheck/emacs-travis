@@ -34,6 +34,8 @@ endif
 
 # Clone Emacs from the Github mirror because it's way faster than upstream
 EMACS_GIT_URL = https://github.com/emacs-mirror/emacs.git
+# URL of Emacs' FTP server
+EMACS_FTP_URL = https://ftp.gnu.org/gnu/emacs
 
 .PHONY: download_emacs_stable clone_emacs_snapshot
 .PHONY: install_emacs install_cask install_texinfo
@@ -42,7 +44,7 @@ EMACS_GIT_URL = https://github.com/emacs-mirror/emacs.git
 download_emacs_stable:
 	@echo "Download Emacs $(EMACS_VERSION)"
 	@curl -o "/tmp/emacs-$(EMACS_VERSION).tar.gz" \
-		"https://ftp.gnu.org/gnu/emacs/emacs-$(EMACS_VERSION).tar.gz"
+		"$(EMACS_FTP_URL)/emacs-$(EMACS_VERSION).tar.gz"
 	@tar xzf "/tmp/emacs-$(EMACS_VERSION).tar.gz" -C /tmp
 	@mv /tmp/emacs-$(EMACS_VERSION) /tmp/emacs
 
