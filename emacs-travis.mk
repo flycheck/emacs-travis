@@ -56,7 +56,7 @@ ifneq ($(IS_RC),)
 REPORTED_EMACS_VERSION = $(VERSION_PART)
 else
 REPORTED_EMACS_VERSION = $(EMACS_VERSION)
-fi
+endif
 
 # Tell recipe processes about the reported Emacs version
 export REPORTED_EMACS_VERSION
