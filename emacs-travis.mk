@@ -22,8 +22,6 @@
 TEXINFO_VERSION ?= 6.1
 EMACS_VERSION ?= 24.5
 VERBOSE ?= no
-# URL of Emacs' FTP server (to choose mirrors or pretest hosts)
-EMACS_FTP_URL ?= "https://ftp.gnu.org/gnu/emacs"
 # Build a minimal Emacs with no special flags, to build as fast as possible
 EMACSCONFFLAGS ?= --with-x-toolkit=no --without-x --without-all --with-xml2 \
 	CFLAGS='-O2 -march=native' CXXFLAGS='-O2 -march=native'
@@ -34,11 +32,6 @@ else
 SILENT=> /dev/null
 endif
 
-# Clone Emacs from the Github mirror because it's way faster than upstream
-EMACS_GIT_URL = https://github.com/emacs-mirror/emacs.git
-# URL of the TAR file
-EMACS_TAR_URL = $(EMACS_FTP_URL)/emacs-$(EMACS_VERSION).tar.xz
-
 # Tear the version apart
 VERSION_PARTS = $(subst -, ,$(EMACS_VERSION))
 VERSION_PART = $(word 1,$(VERSION_PARTS))
@@ -46,6 +39,16 @@ PRE_RELEASE_PART = $(word 2,$(VERSION_PARTS))
 # Whether the version is a release candidate
 IS_RC = $(findstring rc,$(PRE_RELEASE_PART))
 
+# Clone Emacs from the Github mirror because it's way faster than upstream
+EMACS_GIT_URL = https://github.com/emacs-mirror/emacs.git
+# Emacs FTP URL.  Prereleases are on alpha.gnu.org
+ifneq ($(PRE_RELEASE_PART),)
+EMACS_FTP_URL = "https://ftp.gnu.org/gnu/emacs"
+else
+EMACS_FTP_URL = "http://alpha.gnu.org/pub/gnu/emacs/pretest"
+endif
+# URL of the TAR file
+EMACS_TAR_URL = $(EMACS_FTP_URL)/emacs-$(EMACS_VERSION).tar.xz
 
 # If it's an RC the real reported Emacs version is the version without the
 # prerelease postfix.  Otherwise it's just the version that we get.
