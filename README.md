@@ -16,9 +16,16 @@ Add the following to your `.travis.yml`:
 ``` yaml
 language: emacs-lisp
 sudo: false
+# Allow Emacs snapshot builds to fail and don’t wait for these as they can take
+# a looooong time
+matrix:
+  fast_finish: true
+  allow_failures:
+    - env: EMACS_VERSION=snapshot
 env:
   - EMACS_VERSION=24.3
   - EMACS_VERSION=24.5
+  - EMACS_VERSION=25.1-rc2
   - EMACS_VERSION=snapshot
 before_install:
   # Configure $PATH: Executables are installed to $HOME/bin
