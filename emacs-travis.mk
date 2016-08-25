@@ -22,6 +22,8 @@
 TEXINFO_VERSION ?= 6.1
 EMACS_VERSION ?= 24.5
 VERBOSE ?= no
+# URL of Emacs' FTP server (to choose mirrors or pretest hosts)
+EMACS_FTP_URL ?= "https://ftp.gnu.org/gnu/emacs"
 # Build a minimal Emacs with no special flags, to build as fast as possible
 EMACSCONFFLAGS ?= --with-x-toolkit=no --without-x --without-all --with-xml2 \
 	CFLAGS='-O2 -march=native' CXXFLAGS='-O2 -march=native'
@@ -34,8 +36,6 @@ endif
 
 # Clone Emacs from the Github mirror because it's way faster than upstream
 EMACS_GIT_URL = https://github.com/emacs-mirror/emacs.git
-# URL of Emacs' FTP server
-EMACS_FTP_URL = https://ftp.gnu.org/gnu/emacs
 # URL of the TAR file
 EMACS_TAR_URL = $(EMACS_FTP_URL)/emacs-$(EMACS_VERSION).tar.xz
 
