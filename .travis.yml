@@ -7,6 +7,7 @@ cache:
 env:
   matrix:
     - EMACS_VERSION=24.5
+    - EMACS_VERSION=25.1-rc2 EMACS_FTP_URL=http://alpha.gnu.org/pub/gnu/emacs/pretest
     - EMACS_VERSION=snapshot
     - TEXINFO_VERSION=6.1
 before_install:
