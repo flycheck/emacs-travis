@@ -39,15 +39,34 @@ EMACS_GIT_URL = https://github.com/emacs-mirror/emacs.git
 # URL of the TAR file
 EMACS_TAR_URL = $(EMACS_FTP_URL)/emacs-$(EMACS_VERSION).tar.xz
 
+# Tear the version apart
+VERSION_PARTS = $(subst -, ,$(EMACS_VERSION))
+VERSION_PART = $(word 1,$(VERSION_PARTS))
+PRE_RELEASE_PART = $(word 2,$(VERSION_PARTS))
+# Whether the version is a release candidate
+IS_RC = $(findstring rc,$(PRE_RELEASE_PART))
+
+ifneq ($(IS_RC),)
+# If it's an RC the real reported Emacs version is the version without the
+# prerelease postfix
+REPORTED_EMACS_VERSION = $(VERSION_PART)
+else
+# Otherwise it's just the version that we get
+REPORTED_EMACS_VERSION = $(EMACS_VERSION)
+fi
+
+# Tell recipe processes about the reported Emacs version
+export REPORTED_EMACS_VERSION
+
 .PHONY: download_emacs_stable clone_emacs_snapshot
 .PHONY: install_emacs install_cask install_texinfo
-.PHONY: show_version
+.PHONY: test
 
 download_emacs_stable:
 	@echo "Download Emacs $(EMACS_VERSION) from $(EMACS_TAR_URL)"
 	@curl -o "/tmp/emacs-$(EMACS_VERSION).tar.xz" "$(EMACS_TAR_URL)"
 	@tar xf "/tmp/emacs-$(EMACS_VERSION).tar.xz" -C /tmp
-	@mv /tmp/emacs-$(EMACS_VERSION) /tmp/emacs
+	@mv /tmp/emacs-$(REPORTED_EMACS_VERSION) /tmp/emacs
 
 clone_emacs_snapshot:
 	@echo "Clone Emacs from Git"
@@ -80,3 +99,6 @@ install_texinfo:
 	@cd "/tmp/texinfo-$(TEXINFO_VERSION)" && \
 		./configure --quiet --enable-silent-rules --prefix="$(HOME)" $(SILENT)
 	@make -j2 -C "/tmp/texinfo-$(TEXINFO_VERSION)" V=0 install $(SILENT)
+
+test:
+	bundle exec rspec --color --format doc

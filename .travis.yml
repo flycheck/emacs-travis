@@ -15,4 +15,4 @@ before_install:
 script:
   - if [[ -n $EMACS_VERSION ]]; then make -f emacs-travis.mk install_emacs; fi
   - if [[ -n $TEXINFO_VERSION ]]; then make -f emacs-travis.mk install_texinfo; fi
-  - bundle exec rspec --color --format doc
+  - make test

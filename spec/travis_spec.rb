@@ -24,6 +24,7 @@ require 'rspec'
 
 RSpec.describe 'Emacs installation' do
   VERSION = ENV['EMACS_VERSION']
+  REPORTED_VERSION = ENV['REPORTED_EMACS_VERSION']
   EMACS = Pathname.new('~').expand_path / 'bin' / 'emacs'
 
   before do
@@ -42,7 +43,7 @@ RSpec.describe 'Emacs installation' do
 
   it 'installs stable Emacs as by $EMACS_VERSION' do
     skip 'Snapshot version' if VERSION == 'snapshot'
-    expect(emacs_version).to match(/GNU Emacs #{Regexp.quote(VERSION)}\.\d+/)
+    expect(emacs_version).to match(/GNU Emacs #{Regexp.quote(REPORTED_VERSION)}\.\d+/)
   end
 
   it 'installs Emacs snapshot' do
