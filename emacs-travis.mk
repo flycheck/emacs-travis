@@ -42,7 +42,7 @@ IS_RC = $(findstring rc,$(PRE_RELEASE_PART))
 # Clone Emacs from the Github mirror because it's way faster than upstream
 EMACS_GIT_URL = https://github.com/emacs-mirror/emacs.git
 # Emacs FTP URL.  Prereleases are on alpha.gnu.org
-ifneq ($(PRE_RELEASE_PART),)
+ifeq ($(PRE_RELEASE_PART),)
 EMACS_FTP_URL = "https://ftp.gnu.org/gnu/emacs"
 else
 EMACS_FTP_URL = "http://alpha.gnu.org/pub/gnu/emacs/pretest"
