@@ -19,7 +19,7 @@
 # SOFTWARE.
 
 # These variables may be overridden by the user
-TEXINFO_VERSION ?= 6.0
+TEXINFO_VERSION ?= 6.1
 EMACS_VERSION ?= 24.5
 VERBOSE ?= no
 # Build a minimal Emacs with no special flags, to build as fast as possible

@@ -8,7 +8,7 @@ env:
   matrix:
     - EMACS_VERSION=24.5
     - EMACS_VERSION=snapshot
-    - TEXINFO_VERSION=6.0
+    - TEXINFO_VERSION=6.1
 before_install:
   - export PATH="$HOME/bin:$PATH"
 script:
