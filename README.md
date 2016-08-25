@@ -57,9 +57,9 @@ it with `make -f` as in the example above.
 Environment variables (set these in the `env:` section of your `.travis.yml`):
 
 - `$EMACS_VERSION`: The Emacs version to install.  Supports any released version
-  of GNU Emacs (tested with 24.1 and upwards), or the special value `snapshot`
-  to clone the latest `master` from Emacs’ Git.  Defaults to the latest stable
-  release of GNU Emacs.
+  of GNU Emacs (tested with 24.1 and upwards), release candidates
+  (e.g. `25.1-rc2`) or the special value `snapshot` to clone the latest `master`
+  from Emacs’ Git.  Defaults to the latest stable release of GNU Emacs.
 - `$TEXINFO_VERSION`: The Texinfo version to install.  Supports any released
   version of GNU Texinfo (tested with 5.2 and upwards).  Defaults to the latest
   stable release of GNU Texinfo.
