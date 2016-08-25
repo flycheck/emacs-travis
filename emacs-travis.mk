@@ -43,9 +43,9 @@ EMACS_FTP_URL = https://ftp.gnu.org/gnu/emacs
 
 download_emacs_stable:
 	@echo "Download Emacs $(EMACS_VERSION)"
-	@curl -o "/tmp/emacs-$(EMACS_VERSION).tar.gz" \
-		"$(EMACS_FTP_URL)/emacs-$(EMACS_VERSION).tar.gz"
-	@tar xzf "/tmp/emacs-$(EMACS_VERSION).tar.gz" -C /tmp
+	@curl -o "/tmp/emacs-$(EMACS_VERSION).tar.xz" \
+		"$(EMACS_FTP_URL)/emacs-$(EMACS_VERSION).tar.xz"
+	@tar xf "/tmp/emacs-$(EMACS_VERSION).tar.xz" -C /tmp
 	@mv /tmp/emacs-$(EMACS_VERSION) /tmp/emacs
 
 clone_emacs_snapshot:
