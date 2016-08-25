@@ -46,12 +46,12 @@ PRE_RELEASE_PART = $(word 2,$(VERSION_PARTS))
 # Whether the version is a release candidate
 IS_RC = $(findstring rc,$(PRE_RELEASE_PART))
 
-ifneq ($(IS_RC),)
+
 # If it's an RC the real reported Emacs version is the version without the
-# prerelease postfix
+# prerelease postfix.  Otherwise it's just the version that we get.
+ifneq ($(IS_RC),)
 REPORTED_EMACS_VERSION = $(VERSION_PART)
 else
-# Otherwise it's just the version that we get
 REPORTED_EMACS_VERSION = $(EMACS_VERSION)
 fi
 
