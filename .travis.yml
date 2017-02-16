@@ -2,12 +2,19 @@ language: ruby
 sudo: false
 rvm:
   - 2.3.0
+matrix:
+  fast_finish: true
+  allow_failures:
+    - env: EMACS_VERSION=snapshot
 cache:
-  bundler
+  - bundler
+  - directories:
+      - "$HOME/emacs"
 env:
   matrix:
     - EMACS_VERSION=24.5
     - EMACS_VERSION=25.1-rc2
+    - EMACS_VERSION=25.1
     - EMACS_VERSION=snapshot
     - TEXINFO_VERSION=6.1
 before_install:

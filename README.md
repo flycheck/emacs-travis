@@ -16,6 +16,10 @@ Add the following to your `.travis.yml`:
 ``` yaml
 language: emacs-lisp
 sudo: false
+cache:
+  - directories:
+      # Cache stable Emacs binaries (saves 1min per job)
+      - "$HOME/emacs/"
 # Allow Emacs snapshot builds to fail and don’t wait for these as they can take
 # a looooong time
 matrix:
@@ -25,7 +29,7 @@ matrix:
 env:
   - EMACS_VERSION=24.3
   - EMACS_VERSION=24.5
-  - EMACS_VERSION=25.1-rc2
+  - EMACS_VERSION=25.1
   - EMACS_VERSION=snapshot
 before_install:
   # Configure $PATH: Executables are installed to $HOME/bin
@@ -45,8 +49,8 @@ script:
   - cask exec ert-runner
 ```
 
-This setup builds and tests your Emacs Lisp project on Emacs 24.3, 24.5 and the
-current Emacs snapshot from Git.
+This setup builds and tests your Emacs Lisp project on Emacs 24.3, 24.5, 25.1
+and the current Emacs snapshot from Git.
 
 Reference
 ---------
