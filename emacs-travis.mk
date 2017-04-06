@@ -62,31 +62,41 @@ endif
 export REPORTED_EMACS_VERSION
 
 .PHONY: download_emacs_stable clone_emacs_snapshot
-.PHONY: install_emacs install_cask install_texinfo
+.PHONY: configure_emacs install_emacs install_cask install_texinfo
 .PHONY: test
 
 download_emacs_stable:
 	@echo "Download Emacs $(EMACS_VERSION) from $(EMACS_TAR_URL)"
 	@curl -o "/tmp/emacs-$(EMACS_VERSION).tar.xz" "$(EMACS_TAR_URL)"
 	@tar xf "/tmp/emacs-$(EMACS_VERSION).tar.xz" -C /tmp
-	@mv /tmp/emacs-$(REPORTED_EMACS_VERSION) /tmp/emacs
+	@mv /tmp/emacs-$(REPORTED_EMACS_VERSION) "$(EMACS_DIR)"
 
 clone_emacs_snapshot:
 	@echo "Clone Emacs from Git"
-	git clone --depth=1 '$(EMACS_GIT_URL)' /tmp/emacs
-	# Create configure
-	cd /tmp/emacs && ./autogen.sh
+	git clone --depth=1 '$(EMACS_GIT_URL)' $(EMACS_DIR)
+# Create configure
+	cd $(EMACS_DIR) && ./autogen.sh
+
+configure_emacs:
+	@echo "Configure Emacs $(EMACS_VERSION)"
+	@cd "$(EMACS_DIR)" && ./configure --quiet --enable-silent-rules \
+		--prefix="$(HOME)" $(EMACSCONFFLAGS) $(SILENT)
+
+ifeq ($(EMACS_VERSION),snapshot)
+EMACS_DIR = /tmp/emacs
+configure_emacs: clone_emacs_snapshot
+else
+EMACS_DIR = $(HOME)/emacs/$(EMACS_VERSION)
+configure_emacs: download_emacs_stable
+endif
 
 install_emacs:
 	@echo "Install Emacs $(EMACS_VERSION)"
-	@cd '/tmp/emacs' && ./configure --quiet --enable-silent-rules \
-		--prefix="$(HOME)" $(EMACSCONFFLAGS) $(SILENT)
-	@make -j2 -C '/tmp/emacs' V=0 install $(SILENT)
+	@make -j2 -C "$(EMACS_DIR)" V=0 install $(SILENT)
 
-ifeq ($(EMACS_VERSION),snapshot)
-install_emacs: clone_emacs_snapshot
-else
-install_emacs: download_emacs_stable
+# Run configure (and download) only if directory is absent
+ifeq ($(wildcard $(EMACS_DIR)/.),)
+install_emacs: configure_emacs
 endif
 
 install_cask:
