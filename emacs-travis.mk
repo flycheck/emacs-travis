@@ -69,6 +69,7 @@ download_emacs_stable:
 	@echo "Download Emacs $(EMACS_VERSION) from $(EMACS_TAR_URL)"
 	@curl -o "/tmp/emacs-$(EMACS_VERSION).tar.xz" "$(EMACS_TAR_URL)"
 	@tar xf "/tmp/emacs-$(EMACS_VERSION).tar.xz" -C /tmp
+	@mkdir -p `dirname "$(EMACS_DIR)"`
 	@mv /tmp/emacs-$(REPORTED_EMACS_VERSION) "$(EMACS_DIR)"
 
 clone_emacs_snapshot:
