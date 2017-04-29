@@ -22,6 +22,7 @@
 TEXINFO_VERSION ?= 6.1
 EMACS_VERSION ?= 25.2
 VERBOSE ?= no
+MAKE_JOBS ?= 2
 # Build a minimal Emacs with no special flags, to build as fast as possible
 EMACSCONFFLAGS ?= --with-x-toolkit=no --without-x --without-all --with-xml2 \
 	CFLAGS='-O2 -march=native' CXXFLAGS='-O2 -march=native'
@@ -93,7 +94,7 @@ endif
 
 install_emacs:
 	@echo "Install Emacs $(EMACS_VERSION)"
-	@make -j2 -C "$(EMACS_DIR)" V=0 install $(SILENT)
+	@make -j$(MAKE_JOBS) -C "$(EMACS_DIR)" V=0 install $(SILENT)
 
 # Run configure (and download) only if directory is absent
 ifeq ($(wildcard $(EMACS_DIR)/.),)
@@ -112,7 +113,7 @@ install_texinfo:
 	@tar xzf "/tmp/texinfo-$(TEXINFO_VERSION).tar.gz" -C /tmp
 	@cd "/tmp/texinfo-$(TEXINFO_VERSION)" && \
 		./configure --quiet --enable-silent-rules --prefix="$(HOME)" $(SILENT)
-	@make -j2 -C "/tmp/texinfo-$(TEXINFO_VERSION)" V=0 install $(SILENT)
+	@make -j$(MAKE_JOBS) -C "/tmp/texinfo-$(TEXINFO_VERSION)" V=0 install $(SILENT)
 
 test:
 	bundle exec rspec --color --format doc
