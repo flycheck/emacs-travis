@@ -108,12 +108,12 @@ install_cask:
 
 install_texinfo:
 	@echo "Install Texinfo $(TEXINFO_VERSION)"
-	@curl -o "/tmp/texinfo-$(TEXINFO_VERSION).tar.gz" \
+	@curl -sS -o "/tmp/texinfo-$(TEXINFO_VERSION).tar.gz" \
 		'http://ftp.gnu.org/gnu/texinfo/texinfo-$(TEXINFO_VERSION).tar.gz'
 	@tar xzf "/tmp/texinfo-$(TEXINFO_VERSION).tar.gz" -C /tmp
 	@cd "/tmp/texinfo-$(TEXINFO_VERSION)" && \
 		./configure --quiet --enable-silent-rules --prefix="$(HOME)" $(SILENT)
-	@make -j$(MAKE_JOBS) -C "/tmp/texinfo-$(TEXINFO_VERSION)" V=0 install $(SILENT)
+	@make -j$(MAKE_JOBS) -C "/tmp/texinfo-$(TEXINFO_VERSION)" V=0 install -Wunused-result $(SILENT)
 
 test:
 	bundle exec rspec --color --format doc
