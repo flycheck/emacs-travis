@@ -108,11 +108,14 @@ install_cask:
 
 install_texinfo:
 	@echo "Install Texinfo $(TEXINFO_VERSION)"
-	@curl -o "/tmp/texinfo-$(TEXINFO_VERSION).tar.gz" \
+	@curl -sS -o "/tmp/texinfo-$(TEXINFO_VERSION).tar.gz" \
 		'http://ftp.gnu.org/gnu/texinfo/texinfo-$(TEXINFO_VERSION).tar.gz'
 	@tar xzf "/tmp/texinfo-$(TEXINFO_VERSION).tar.gz" -C /tmp
 	@cd "/tmp/texinfo-$(TEXINFO_VERSION)" && \
-		./configure --quiet --enable-silent-rules --prefix="$(HOME)" $(SILENT)
+		CFLAGS="$(CFLAGS) -Wno-unused-result" ./configure --quiet --enable-silent-rules --prefix="$(HOME)" $(SILENT)
+# Patching Makefile to inhibit unexpected warnings.
+# See: https://github.com/flycheck/emacs-travis/pull/9
+	@sed -i -e "s/^CFLAGS =\(.*\)/CFLAGS = \1 -Wno-unused-result/g" "/tmp/texinfo-$(TEXINFO_VERSION)/info/Makefile"
 	@make -j$(MAKE_JOBS) -C "/tmp/texinfo-$(TEXINFO_VERSION)" V=0 install $(SILENT)
 
 test:

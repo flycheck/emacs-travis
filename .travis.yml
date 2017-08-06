@@ -1,5 +1,6 @@
 language: ruby
 sudo: false
+dist: trusty
 rvm:
   - 2.3.0
 matrix:
@@ -8,6 +9,7 @@ matrix:
     - env: EMACS_VERSION=snapshot
 cache:
   - bundler
+  - apt: true
   - directories:
       - "$HOME/emacs"
 env:
@@ -24,3 +26,7 @@ script:
   - if [[ -n $EMACS_VERSION ]]; then make -f emacs-travis.mk install_emacs; fi
   - if [[ -n $TEXINFO_VERSION ]]; then make -f emacs-travis.mk install_texinfo; fi
   - make -f emacs-travis.mk test
+addons:
+  apt:
+    packages:
+      - libperl-dev
