@@ -1,34 +1,28 @@
 language: ruby
-
 sudo: false
 dist: trusty
-
 rvm:
   - 2.3.0
-
-# Allow Emacs snapshot builds to fail and don't wait for these
+# Allow Emacs snapshot builds to fail and don't wait for it
 matrix:
   fast_finish: true
   allow_failures:
     - env: EMACS_VERSION=snapshot
-
 # Cache stable Emacs binaries and packages
 cache:
   bundler: true
   apt: true
-  timeout: 691200
   directories:
       - "$HOME/emacs"
-      - "$HOME/.emacs.d"
-
+      - vendor/bundle
 git:
   depth: 1
-
 env:
   matrix:
     - EMACS_VERSION=24.3
     - EMACS_VERSION=24.4
     - EMACS_VERSION=24.5
+    - EMACS_VERSION=25.1-rc2
     - EMACS_VERSION=25.1
     - EMACS_VERSION=25.2
     - EMACS_VERSION=snapshot
@@ -36,20 +30,17 @@ env:
   global:
     # Maximum number of executing procesors
     - MAKE_JOBS=$(getconf _NPROCESSORS_ONLN)
-
+    # To cache vendor/bundle
+    - BUNDLE_PATH=vendor/bundle
+    # Setting up the parallel Install
+    - BUNDLE_JOBS=$(getconf _NPROCESSORS_ONLN)
 before_install:
   # Configure $PATH: Executables are installed to $HOME/bin
   - export PATH="$HOME/bin:$PATH"
-
-before_script:
-  # Make sure the exact Emacs version can be found in the build output
-  - $(command -v emacs) --version | head -1
-
 script:
-  - '[[ ! -n $EMACS_VERSION ]] || make -s -f emacs-travis.mk install_emacs'
-  - '[[ ! -n $TEXINFO_VERSION ]] || make -s -f emacs-travis.mk install_texinfo'
+  - if [[ -n $EMACS_VERSION ]]; then make -s -f emacs-travis.mk install_emacs; fi
+  - if [[ -n $TEXINFO_VERSION ]]; then make -s -f emacs-travis.mk install_texinfo; fi
   - make -f emacs-travis.mk test
-
 addons:
   apt:
     packages:
