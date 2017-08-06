@@ -33,6 +33,9 @@ env:
     - EMACS_VERSION=25.2
     - EMACS_VERSION=snapshot
     - TEXINFO_VERSION=6.1
+  global:
+    # Maximum number of executing procesors
+    - MAKE_JOBS=$(getconf _NPROCESSORS_ONLN)
 
 before_install:
   # Configure $PATH: Executables are installed to $HOME/bin

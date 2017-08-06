@@ -59,6 +59,16 @@ else
 REPORTED_EMACS_VERSION = $(EMACS_VERSION)
 endif
 
+# FIXME: Add test for minimal Emacs version.
+# See: https://github.com/flycheck/emacs-travis/issues/10
+
+# The Emacs 24.3 doesn't have "--enable-silent-rules" configure option
+ifeq ($(EMACS_VERSION),24.3)
+CONFIGUREFLAGS = --quiet --prefix="$(HOME)"
+else
+CONFIGUREFLAGS = --quiet --enable-silent-rules --prefix="$(HOME)"
+endif
+
 # Tell recipe processes about the reported Emacs version
 export REPORTED_EMACS_VERSION
 
@@ -75,14 +85,13 @@ download_emacs_stable:
 
 clone_emacs_snapshot:
 	@echo "Clone Emacs from Git"
-	git clone --depth=1 '$(EMACS_GIT_URL)' $(EMACS_DIR)
+	git clone -q --depth=1 '$(EMACS_GIT_URL)' $(EMACS_DIR)
 # Create configure
 	cd $(EMACS_DIR) && ./autogen.sh
 
 configure_emacs:
 	@echo "Configure Emacs $(EMACS_VERSION)"
-	@cd "$(EMACS_DIR)" && ./configure --quiet --enable-silent-rules \
-		--prefix="$(HOME)" $(EMACSCONFFLAGS) $(SILENT)
+	@cd "$(EMACS_DIR)" && ./configure $(CONFIGUREFLAGS) $(EMACSCONFFLAGS) $(SILENT)
 
 ifeq ($(EMACS_VERSION),snapshot)
 EMACS_DIR = /tmp/emacs
@@ -112,7 +121,7 @@ install_texinfo:
 		'http://ftp.gnu.org/gnu/texinfo/texinfo-$(TEXINFO_VERSION).tar.gz'
 	@tar xzf "/tmp/texinfo-$(TEXINFO_VERSION).tar.gz" -C /tmp
 	@cd "/tmp/texinfo-$(TEXINFO_VERSION)" && \
-		CFLAGS="$(CFLAGS) -Wno-unused-result" ./configure --quiet --enable-silent-rules --prefix="$(HOME)" $(SILENT)
+		CFLAGS="$(CFLAGS) -Wno-unused-result" ./configure $(CONFIGUREFLAGS) $(SILENT)
 # Patching Makefile to inhibit unexpected warnings.
 # See: https://github.com/flycheck/emacs-travis/pull/9
 	@sed -i -e "s/^CFLAGS =\(.*\)/CFLAGS = \1 -Wno-unused-result/g" "/tmp/texinfo-$(TEXINFO_VERSION)/info/Makefile"
