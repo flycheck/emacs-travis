@@ -54,7 +54,7 @@ This setup builds and tests your Emacs Lisp project on Emacs 24.3, 24.5, 25.1,
 25.2 and the current Emacs snapshot from Git.
 
 Note: To use Texinfo you'll need `libperl.so`. For example in Ubuntu you can
-install it this by using command as follows:
+install it by using command as follows:
 
 ```bash
 sudo apt-get install libperl-dev
