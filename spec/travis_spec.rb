@@ -48,6 +48,6 @@ RSpec.describe 'Emacs installation' do
 
   it 'installs Emacs snapshot' do
     skip 'Stable version' unless VERSION == 'snapshot'
-    expect(emacs_version).to match(/GNU Emacs \d+\.(0|1)\.50\.\d+/)
+    expect(emacs_version).to match(/GNU Emacs \d+\.(0|1)\.50(\.\d+)?/)
   end
 end
