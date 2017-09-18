@@ -49,7 +49,7 @@ else
 EMACS_FTP_URL = "http://alpha.gnu.org/pub/gnu/emacs/pretest"
 endif
 # URL of the TAR file
-EMACS_TAR_URL = $(EMACS_FTP_URL)/emacs-$(EMACS_VERSION).tar.xz
+EMACS_TAR_URL = $(EMACS_FTP_URL)/emacs-$(EMACS_VERSION).tar.gz
 
 # If it's an RC the real reported Emacs version is the version without the
 # prerelease postfix.  Otherwise it's just the version that we get.
@@ -78,8 +78,8 @@ export REPORTED_EMACS_VERSION
 
 download_emacs_stable:
 	@echo "Download Emacs $(EMACS_VERSION) from $(EMACS_TAR_URL)"
-	@curl -o "/tmp/emacs-$(EMACS_VERSION).tar.xz" "$(EMACS_TAR_URL)"
-	@tar xf "/tmp/emacs-$(EMACS_VERSION).tar.xz" -C /tmp
+	@curl -o "/tmp/emacs-$(EMACS_VERSION).tar.gz" "$(EMACS_TAR_URL)"
+	@tar xf "/tmp/emacs-$(EMACS_VERSION).tar.gz" -C /tmp
 	@mkdir -p `dirname "$(EMACS_DIR)"`
 	@mv /tmp/emacs-$(REPORTED_EMACS_VERSION) "$(EMACS_DIR)"
 
