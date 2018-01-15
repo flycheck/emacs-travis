@@ -1,6 +1,9 @@
 language: ruby
-sudo: false
+# Emacs fails to build using the latest Trusty image on Travis
+# See https://github.com/travis-ci/travis-ci/issues/9073
+sudo: required
 dist: trusty
+group: deprecated-2017Q4
 rvm:
   - 2.3.0
 # Allow Emacs snapshot builds to fail and don't wait for it
