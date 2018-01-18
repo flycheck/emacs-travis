@@ -38,12 +38,12 @@ VERSION_PARTS = $(subst -, ,$(EMACS_VERSION))
 VERSION_PART = $(word 1,$(VERSION_PARTS))
 PRE_RELEASE_PART = $(word 2,$(VERSION_PARTS))
 # Whether the version is a release candidate
-IS_RC = $(findstring rc,$(PRE_RELEASE_PART))
+PRETEST ?= $(findstring rc,$(PRE_RELEASE_PART))
 
 # Clone Emacs from the Github mirror because it's way faster than upstream
 EMACS_GIT_URL = https://github.com/emacs-mirror/emacs.git
 # Emacs FTP URL.  Prereleases are on alpha.gnu.org
-ifeq ($(PRE_RELEASE_PART),)
+ifeq ($(PRETEST),)
 EMACS_FTP_URL = "https://ftp.gnu.org/gnu/emacs"
 else
 EMACS_FTP_URL = "http://alpha.gnu.org/pub/gnu/emacs/pretest"
@@ -53,7 +53,7 @@ EMACS_TAR_URL = $(EMACS_FTP_URL)/emacs-$(EMACS_VERSION).tar.xz
 
 # If it's an RC the real reported Emacs version is the version without the
 # prerelease postfix.  Otherwise it's just the version that we get.
-ifneq ($(IS_RC),)
+ifneq ($(PRETEST),)
 REPORTED_EMACS_VERSION = $(VERSION_PART)
 else
 REPORTED_EMACS_VERSION = $(EMACS_VERSION)

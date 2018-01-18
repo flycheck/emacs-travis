@@ -1,3 +1,4 @@
+# Copyright (c) 2018 Flycheck contributors
 # Copyright (c) 2016 Sebastian Wiesner <swiesner@lunaryorn.com>
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -43,7 +44,7 @@ RSpec.describe 'Emacs installation' do
 
   it 'installs stable Emacs as by $EMACS_VERSION' do
     skip 'Snapshot version' if VERSION == 'snapshot'
-    expect(emacs_version).to match(/GNU Emacs #{Regexp.quote(REPORTED_VERSION)}\.\d+/)
+    expect(emacs_version).to match(/GNU Emacs #{Regexp.quote(REPORTED_VERSION)}/)
   end
 
   it 'installs Emacs snapshot' do
