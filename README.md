@@ -15,11 +15,11 @@ Add the following to your `.travis.yml`:
 
 ``` yaml
 language: emacs-lisp
-# Emacs fails to build using the latest Trusty image on Travis
-# See https://github.com/travis-ci/travis-ci/issues/9073
+# Emacs fails to build in container-based builds on Travis
+# See https://github.com/travis-ci/travis-ci/issues/9061
+# and https://github.com/moby/moby/issues/22801
 sudo: required
 dist: trusty
-group: deprecated-2017Q4
 cache:
   - directories:
       # Cache stable Emacs binaries (saves 1min per job)
