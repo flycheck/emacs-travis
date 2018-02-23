@@ -11,13 +11,6 @@ matrix:
   fast_finish: true
   allow_failures:
     - env: EMACS_VERSION=snapshot
-# Cache stable Emacs binaries and packages
-cache:
-  bundler: true
-  apt: true
-  directories:
-      - "$HOME/emacs"
-      - vendor/bundle
 git:
   depth: 1
 env:
