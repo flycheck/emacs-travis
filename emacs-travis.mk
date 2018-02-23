@@ -1,3 +1,4 @@
+# Copyright (c) 2017-2018 Flycheck contributors
 # Copyright (c) 2015-2016 Sebastian Wiesner <swiesner@lunaryorn.com>
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -34,9 +35,10 @@ SILENT=> /dev/null
 endif
 
 # Tear the version apart
-VERSION_PARTS = $(subst -, ,$(EMACS_VERSION))
-VERSION_PART = $(word 1,$(VERSION_PARTS))
-PRE_RELEASE_PART = $(word 2,$(VERSION_PARTS))
+VERSION_PARTS := $(subst -, ,$(EMACS_VERSION))
+VERSION_PART := $(word 1,$(VERSION_PARTS))
+PRE_RELEASE_PART := $(word 2,$(VERSION_PARTS))
+MAJOR_VERSION := $(word 1,$(subst ., ,$(EMACS_VERSION)))
 # Whether the version is a release candidate
 PRETEST ?= $(findstring rc,$(PRE_RELEASE_PART))
 
@@ -69,12 +71,33 @@ else
 CONFIGUREFLAGS = --quiet --enable-silent-rules --prefix="$(HOME)"
 endif
 
+# The Ubuntu 14.04 image on Travis has an outdated GnuTLS which prevents us from
+# pulling from ELPA/MELPA under Emacs 26 and above.
+# See https://emacs.stackexchange.com/a/38404
+ifeq ($(MAJOR_VERSION),26)
+configure_emacs: install_gnutls
+else ifeq ($(EMACS_VERSION),snapshot)
+configure_emacs: install_gnutls
+endif
+
 # Tell recipe processes about the reported Emacs version
 export REPORTED_EMACS_VERSION
 
-.PHONY: download_emacs_stable clone_emacs_snapshot
+.PHONY: download_emacs_stable clone_emacs_snapshot install_gnutls
 .PHONY: configure_emacs install_emacs install_cask install_texinfo
 .PHONY: test
+
+install_gnutls:
+	@echo "Install GnuTLS 3"
+	@sudo apt-get -qq update
+	@sudo apt-get install -y build-essential nettle-dev libgmp-dev
+	@wget ftp://ftp.gnutls.org/gcrypt/gnutls/v3.1/gnutls-3.1.23.tar.xz
+	@tar -xf gnutls-3.1.23.tar.xz
+	@cd gnutls-3.1.23 \
+	  && ./configure \
+	  && make -j2 \
+	  && sudo make install \
+	  && sudo ln -s /usr/local/lib/libgnutls.so.28 /usr/lib/libgnutls.so.28
 
 download_emacs_stable:
 	@echo "Download Emacs $(EMACS_VERSION) from $(EMACS_TAR_URL)"
