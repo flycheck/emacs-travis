@@ -32,12 +32,9 @@ matrix:
     - env: EMACS_VERSION=snapshot
 env:
   - EMACS_VERSION=24.3
-  - EMACS_VERSION=24.5
   - EMACS_VERSION=25.1-rc2
-  - EMACS_VERSION=25.1
-  - EMACS_VERSION=25.2
   - EMACS_VERSION=25.3
-  - EMACS_VERSION=26.0.90 PRETEST=yes
+  - EMACS_VERSION=26.0.91 PRETEST=yes
   - EMACS_VERSION=snapshot
 before_install:
   # Configure $PATH: Executables are installed to $HOME/bin
@@ -57,8 +54,9 @@ script:
   - cask exec ert-runner
 ```
 
-This setup builds and tests your Emacs Lisp project on Emacs 24.3, 24.5, 25.1,
-25.2 and the current Emacs snapshot from Git.
+This setup builds and tests your Emacs Lisp project on Emacs 24.3, the second
+release candidate of 25.1, 25.3, the 26.0.91 pretest, and the current Emacs
+snapshot from Git.
 
 Note: To use Texinfo you'll need `libperl.so`. For example in Ubuntu you can
 install it by using command as follows:
