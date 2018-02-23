@@ -97,7 +97,8 @@ Targets (for use in `before_install`):
 License
 -------
 
-Copyright © 2015 Sebastian Wiesner <swiesner@lunaryorn.com>
+Copyright © 2017-2018 Flycheck contributors
+Copyright © 2015-2016 Sebastian Wiesner <swiesner@lunaryorn.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
