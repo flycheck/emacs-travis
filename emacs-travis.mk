@@ -94,9 +94,9 @@ install_gnutls:
 	@wget ftp://ftp.gnutls.org/gcrypt/gnutls/v3.1/gnutls-3.1.23.tar.xz
 	@tar -xf gnutls-3.1.23.tar.xz
 	@cd gnutls-3.1.23 \
-	  && ./configure \
-	  && make -j2 \
-	  && sudo make install \
+	  && ./configure $(SILENT) \
+	  && make -j$(MAKE_JOBS) $(SILENT) \
+	  && sudo make install $(SILENT) \
 	  && sudo ln -s /usr/local/lib/libgnutls.so.28 /usr/lib/libgnutls.so.28
 
 download_emacs_stable:
