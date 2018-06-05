@@ -9,7 +9,7 @@ of Travis CI.  It compiles a minimal Emacs and Texinfo from source and installs
 them into `$HOME/bin`.
 
 Usage
-=====
+-----
 
 Add the following to your `.travis.yml`:
 
@@ -64,6 +64,17 @@ install it by using command as follows:
 ```bash
 sudo apt-get install libperl-dev
 ```
+
+Other ways to run Emacs on CI
+-----------------------------
+
+- [emacs-cask](https://hub.docker.com/r/flycheck/emacs-cask/) is a collection of
+  Docker images containing a minimal Emacs compiled from source (like this
+  project) and Cask.
+- [EVM](https://github.com/rejeep/evm) provides pre-built Emacs binaries you can
+  use for CI.  It does not recompile Emacs every job, unlike this project.
+  However, it does not provides binaries for the latest snapshot version of
+  Emacs.
 
 Reference
 ---------
