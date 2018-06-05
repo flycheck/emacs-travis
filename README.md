@@ -68,9 +68,15 @@ sudo apt-get install libperl-dev
 Other ways to run Emacs on CI
 -----------------------------
 
-- [emacs-cask](https://hub.docker.com/r/flycheck/emacs-cask/) is a collection of
-  Docker images containing a minimal Emacs compiled from source (like this
-  project) and Cask.
+- [Silex/docker-emacs](https://github.com/Silex/docker-emacs) provides Docker
+  images of Emacs for running on CI or interactive use locally.  There are also
+  images with Cask and Git.
+- [flycheck/emacs-cask](https://hub.docker.com/r/flycheck/emacs-cask/) is a
+  collection of Docker images containing a minimal Emacs compiled from source
+  (like this project) and Cask.  Unlike `Silex/docker-emacs`, the Emacs in the
+  image is built with very few options, intended for use in batch mode, not for
+  interactive usage.  Also, `Silex/docker-emacs` provides more versions of Emacs
+  as Docker images.
 - [EVM](https://github.com/rejeep/evm) provides pre-built Emacs binaries you can
   use for CI.  It does not recompile Emacs every job, unlike this project.
   However, it does not provides binaries for the latest snapshot version of
