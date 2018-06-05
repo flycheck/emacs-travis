@@ -50,6 +50,11 @@ EMACSCONFFLAGS += --with-modules
 endif
 endif
 
+ifeq ($(TRAVIS_OS_NAME),osx)
+# The "games" group does not exist on macOS, so we configure --with-gameuser to the current user (i.e., "travis")
+EMACSCONFFLAGS += --with-gameuser=$(USER)
+endif
+
 # Clone Emacs from the Github mirror because it's way faster than upstream
 EMACS_GIT_URL = https://github.com/emacs-mirror/emacs.git
 # Emacs FTP URL.  Prereleases are on alpha.gnu.org
@@ -96,6 +101,10 @@ export REPORTED_EMACS_VERSION
 .PHONY: test
 
 install_gnutls:
+ifeq ($(TRAVIS_OS_NAME),osx)
+#	GnuTLS can be upgraded with Homebrew instead of apt-get (which obviously does not exist on macOS)
+	brew upgrade gnutls
+else
 	@echo "Install GnuTLS 3"
 	@sudo apt-get -qq update
 	@sudo apt-get install -y build-essential nettle-dev libgmp-dev
@@ -106,6 +115,7 @@ install_gnutls:
 	  && make -j$(MAKE_JOBS) $(SILENT) \
 	  && sudo make install $(SILENT) \
 	  && sudo ln -s /usr/local/lib/libgnutls.so.28 /usr/lib/libgnutls.so.28
+endif
 
 download_emacs_stable:
 	@echo "Download Emacs $(EMACS_VERSION) from $(EMACS_TAR_URL)"
@@ -135,6 +145,10 @@ endif
 install_emacs:
 	@echo "Install Emacs $(EMACS_VERSION)"
 	@make -j$(MAKE_JOBS) -C "$(EMACS_DIR)" V=0 install $(SILENT)
+ifeq ($(TRAVIS_OS_NAME),osx)
+#	To pretend that an up-to-date emacs exists in $HOME/bin, we must link it out of Emacs.app
+	ln -s $(HOME)/emacs/$(EMACS_VERSION)/nextstep/Emacs.app/Contents/MacOS/Emacs $(HOME)/bin/emacs
+endif
 
 # Run configure (and download) only if directory is absent
 ifeq ($(wildcard $(EMACS_DIR)/.),)
