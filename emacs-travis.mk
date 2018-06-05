@@ -53,6 +53,8 @@ endif
 ifeq ($(TRAVIS_OS_NAME),osx)
 # The "games" group does not exist on macOS, so we configure --with-gameuser to the current user (i.e., "travis")
 EMACSCONFFLAGS += --with-gameuser=$(USER)
+# Non-toolkit scroll bars are not implemented for Nextstep.
+EMACSCONFFLAGS += --with-toolkit-scroll-bars=yes
 endif
 
 # Clone Emacs from the Github mirror because it's way faster than upstream
