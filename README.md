@@ -109,6 +109,8 @@ Targets (for use in `before_install`):
 - `install_emacs`: Install GNU Emacs, as per `$EMACS_VERSION`
 - `install_texinfo`: Install GNU Texinfo, as per `$TEXINFO_VERSION`
 
+Note the OS/version combinations which are not supported within `.travis.yml`.
+
 License
 -------
 

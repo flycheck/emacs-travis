@@ -7,10 +7,19 @@ dist: trusty
 rvm:
   - 2.3.0
 # Allow Emacs snapshot builds to fail and don't wait for it
+os:
+  - linux
+  - osx
 matrix:
   fast_finish: true
   allow_failures:
     - env: EMACS_VERSION=snapshot
+    - env: EMACS_VERSION=24.3
+      os: osx
+    - env: EMACS_VERSION=24.4
+      os: osx
+    - env: EMACS_VERSION=24.5
+      os: osx
 git:
   depth: 1
 env:
@@ -23,6 +32,7 @@ env:
     - EMACS_VERSION=25.2
     - EMACS_VERSION=25.3
     - EMACS_VERSION=26.0.91 PRETEST=yes
+    - EMACS_VERSION=26.1
     - EMACS_VERSION=snapshot
     - TEXINFO_VERSION=6.1
   global:
