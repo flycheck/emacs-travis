@@ -24,9 +24,6 @@ TEXINFO_VERSION ?= 6.1
 EMACS_VERSION ?= 25.3
 VERBOSE ?= no
 MAKE_JOBS ?= 2
-# Build a minimal Emacs with no special flags, to build as fast as possible
-EMACSCONFFLAGS ?= --with-x-toolkit=no --without-x --without-all --with-xml2 \
-	CFLAGS='-O2 -march=native' CXXFLAGS='-O2 -march=native'
 
 ifeq ($(VERBOSE),yes)
 SILENT=
@@ -41,6 +38,17 @@ PRE_RELEASE_PART := $(word 2,$(VERSION_PARTS))
 MAJOR_VERSION := $(word 1,$(subst ., ,$(EMACS_VERSION)))
 # Whether the version is a release candidate
 PRETEST ?= $(findstring rc,$(PRE_RELEASE_PART))
+
+# Build a minimal Emacs with no special flags, to build as fast as possible
+ifndef EMACSCONFFLAGS
+EMACSCONFFLAGS := --with-x-toolkit=no --without-x --without-all --with-xml2 \
+	CFLAGS='-O2 -march=native' \
+	CXXFLAGS='-O2 -march=native'
+
+ifeq ($(shell test ( $(EMACS_VERSION) -eq snapshot ) -o ( $(MAJOR_VERSION) -ge 25 ); echo $$?),0)
+EMACSCONFFLAGS += --with-modules
+endif
+endif
 
 # Clone Emacs from the Github mirror because it's way faster than upstream
 EMACS_GIT_URL = https://github.com/emacs-mirror/emacs.git
