@@ -45,7 +45,7 @@ EMACSCONFFLAGS := --with-x-toolkit=no --without-x --without-all --with-xml2 \
 	CFLAGS='-O2 -march=native' \
 	CXXFLAGS='-O2 -march=native'
 
-ifeq ($(shell test ( $(EMACS_VERSION) -eq snapshot ) -o ( $(MAJOR_VERSION) -ge 25 ); echo $$?),0)
+ifeq ($(shell [ "$(EMACS_VERSION)" = snapshot ] || [ "$(MAJOR_VERSION)" -ge 25 ]; echo $$?),0)
 EMACSCONFFLAGS += --with-modules
 endif
 endif
