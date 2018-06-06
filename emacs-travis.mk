@@ -149,7 +149,8 @@ install_emacs:
 	@make -j$(MAKE_JOBS) -C "$(EMACS_DIR)" V=0 install $(SILENT)
 ifeq ($(TRAVIS_OS_NAME),osx)
 #	To pretend that an up-to-date emacs exists in $HOME/bin, we must link it out of Emacs.app
-	ln -s $(HOME)/emacs/$(EMACS_VERSION)/nextstep/Emacs.app/Contents/MacOS/Emacs $(HOME)/bin/emacs
+	@mkdir -p "$(HOME)/bin"
+	@ln -s "$(HOME)/emacs/$(EMACS_VERSION)/nextstep/Emacs.app/Contents/MacOS/Emacs" "$(HOME)/bin/emacs"
 endif
 
 # Run configure (and download) only if directory is absent
@@ -160,6 +161,7 @@ endif
 install_cask:
 	@echo "Install Cask"
 	@git clone --depth=1 https://github.com/cask/cask.git "$(HOME)/.cask"
+	@mkdir -p "$(HOME)/bin"
 	@ln -s "$(HOME)/.cask/bin/cask" "$(HOME)/bin/cask"
 
 install_texinfo:
