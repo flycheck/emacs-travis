@@ -107,12 +107,12 @@ ifeq ($(TRAVIS_OS_NAME),osx)
 #	GnuTLS can be upgraded with Homebrew instead of apt-get (which obviously does not exist on macOS)
 	brew upgrade gnutls > brew.log && echo 'Success' || { cat brew.log && false }
 else
-	@echo "Install GnuTLS 3"
-	@sudo apt-get -qq update
-	@sudo apt-get install -y build-essential nettle-dev libgmp-dev
-	@wget ftp://ftp.gnutls.org/gcrypt/gnutls/v3.1/gnutls-3.1.23.tar.xz
-	@tar -xf gnutls-3.1.23.tar.xz
-	@cd gnutls-3.1.23 \
+	echo "Install GnuTLS 3"
+	sudo apt-get -qq update
+	sudo apt-get install -y build-essential nettle-dev libgmp-dev
+	wget ftp://ftp.gnutls.org/gcrypt/gnutls/v3.1/gnutls-3.1.23.tar.xz
+	tar -xf gnutls-3.1.23.tar.xz
+	cd gnutls-3.1.23 \
 	  && ./configure $(SILENT) \
 	  && make -j$(MAKE_JOBS) $(SILENT) \
 	  && sudo make install $(SILENT) \
@@ -120,21 +120,21 @@ else
 endif
 
 download_emacs_stable:
-	@echo "Download Emacs $(EMACS_VERSION) from $(EMACS_TAR_URL)"
-	@curl -o "/tmp/emacs-$(EMACS_VERSION).tar.xz" "$(EMACS_TAR_URL)"
-	@tar xf "/tmp/emacs-$(EMACS_VERSION).tar.xz" -C /tmp
-	@mkdir -p `dirname "$(EMACS_DIR)"`
-	@mv /tmp/emacs-$(REPORTED_EMACS_VERSION) "$(EMACS_DIR)"
+	echo "Download Emacs $(EMACS_VERSION) from $(EMACS_TAR_URL)"
+	curl -o "/tmp/emacs-$(EMACS_VERSION).tar.xz" "$(EMACS_TAR_URL)"
+	tar xf "/tmp/emacs-$(EMACS_VERSION).tar.xz" -C /tmp
+	mkdir -p `dirname "$(EMACS_DIR)"`
+	mv /tmp/emacs-$(REPORTED_EMACS_VERSION) "$(EMACS_DIR)"
 
 clone_emacs_snapshot:
-	@echo "Clone Emacs from Git"
+	echo "Clone Emacs from Git"
 	git clone -q --depth=1 '$(EMACS_GIT_URL)' $(EMACS_DIR)
 # Create configure
 	cd $(EMACS_DIR) && ./autogen.sh
 
 configure_emacs:
-	@echo "Configure Emacs $(EMACS_VERSION)"
-	@cd "$(EMACS_DIR)" && ./configure $(CONFIGUREFLAGS) $(EMACSCONFFLAGS) $(SILENT)
+	echo "Configure Emacs $(EMACS_VERSION)"
+	cd "$(EMACS_DIR)" && ./configure $(CONFIGUREFLAGS) $(EMACSCONFFLAGS) $(SILENT)
 
 ifeq ($(EMACS_VERSION),snapshot)
 EMACS_DIR = /tmp/emacs
@@ -145,12 +145,12 @@ configure_emacs: download_emacs_stable
 endif
 
 install_emacs:
-	@echo "Install Emacs $(EMACS_VERSION)"
-	@make -j$(MAKE_JOBS) -C "$(EMACS_DIR)" V=0 install $(SILENT)
+	echo "Install Emacs $(EMACS_VERSION)"
+	make -j$(MAKE_JOBS) -C "$(EMACS_DIR)" V=0 install $(SILENT)
 ifeq ($(TRAVIS_OS_NAME),osx)
 #	To pretend that an up-to-date emacs exists in $HOME/bin, we must link it out of Emacs.app
-	@mkdir -p "$(HOME)/bin"
-	@ln -s "$(HOME)/emacs/$(EMACS_VERSION)/nextstep/Emacs.app/Contents/MacOS/Emacs" "$(HOME)/bin/emacs"
+	mkdir -p "$(HOME)/bin"
+	ln -s "$(HOME)/emacs/$(EMACS_VERSION)/nextstep/Emacs.app/Contents/MacOS/Emacs" "$(HOME)/bin/emacs"
 endif
 
 # Run configure (and download) only if directory is absent
@@ -159,22 +159,22 @@ install_emacs: configure_emacs
 endif
 
 install_cask:
-	@echo "Install Cask"
-	@git clone --depth=1 https://github.com/cask/cask.git "$(HOME)/.cask"
-	@mkdir -p "$(HOME)/bin"
-	@ln -s "$(HOME)/.cask/bin/cask" "$(HOME)/bin/cask"
+	echo "Install Cask"
+	git clone --depth=1 https://github.com/cask/cask.git "$(HOME)/.cask"
+	mkdir -p "$(HOME)/bin"
+	ln -s "$(HOME)/.cask/bin/cask" "$(HOME)/bin/cask"
 
 install_texinfo:
-	@echo "Install Texinfo $(TEXINFO_VERSION)"
-	@curl -sS -o "/tmp/texinfo-$(TEXINFO_VERSION).tar.gz" \
+	echo "Install Texinfo $(TEXINFO_VERSION)"
+	curl -sS -o "/tmp/texinfo-$(TEXINFO_VERSION).tar.gz" \
 		'http://ftp.gnu.org/gnu/texinfo/texinfo-$(TEXINFO_VERSION).tar.gz'
-	@tar xzf "/tmp/texinfo-$(TEXINFO_VERSION).tar.gz" -C /tmp
-	@cd "/tmp/texinfo-$(TEXINFO_VERSION)" && \
+	tar xzf "/tmp/texinfo-$(TEXINFO_VERSION).tar.gz" -C /tmp
+	cd "/tmp/texinfo-$(TEXINFO_VERSION)" && \
 		CFLAGS="$(CFLAGS) -Wno-unused-result" ./configure $(CONFIGUREFLAGS) $(SILENT)
 # Patching Makefile to inhibit unexpected warnings.
 # See: https://github.com/flycheck/emacs-travis/pull/9
-	@sed -i -e "s/^CFLAGS =\(.*\)/CFLAGS = \1 -Wno-unused-result/g" "/tmp/texinfo-$(TEXINFO_VERSION)/info/Makefile"
-	@make -j$(MAKE_JOBS) -C "/tmp/texinfo-$(TEXINFO_VERSION)" V=0 install $(SILENT)
+	sed -i -e "s/^CFLAGS =\(.*\)/CFLAGS = \1 -Wno-unused-result/g" "/tmp/texinfo-$(TEXINFO_VERSION)/info/Makefile"
+	make -j$(MAKE_JOBS) -C "/tmp/texinfo-$(TEXINFO_VERSION)" V=0 install $(SILENT)
 
 test:
 	bundle exec rspec --color --format doc
