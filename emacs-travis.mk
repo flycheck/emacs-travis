@@ -105,7 +105,7 @@ export REPORTED_EMACS_VERSION
 install_gnutls:
 ifeq ($(TRAVIS_OS_NAME),osx)
 #	GnuTLS can be upgraded with Homebrew instead of apt-get (which obviously does not exist on macOS)
-	brew upgrade gnutls > brew.log && echo 'Success' || { cat brew.log && false }
+	brew upgrade gnutls > brew.log
 else
 	echo "Install GnuTLS 3"
 	sudo apt-get -qq update
