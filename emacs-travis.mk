@@ -111,7 +111,7 @@ else
 	@echo "Install GnuTLS 3"
 	@sudo apt-get -qq update
 	@sudo apt-get install -y build-essential nettle-dev libgmp-dev
-	@wget ftp://ftp.gnutls.org/gcrypt/gnutls/v3.1/gnutls-3.1.23.tar.xz
+	@wget https://www.gnupg.org/ftp/gcrypt/gnutls/v3.1/gnutls-3.1.23.tar.xz
 	@tar -xf gnutls-3.1.23.tar.xz
 	@cd gnutls-3.1.23 \
 	  && ./configure $(SILENT) \
